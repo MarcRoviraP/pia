@@ -1,7 +1,7 @@
 id,nombre,apellido,departamento,salario,puesto,id_jefe
 1,Juan,Pérez,IT,2500,Desarrollador,5.0
 2,Ana,Gómez,Marketing,3200,Especialista,6.0
-3,Jorge,Hernández,IT,2800,Soporte,5.0
+3,Jorge,Hernández,IT,2800,Soporte                           ,5.0
 4,Lucía,Martín,Finanzas,4000,Contable,7.0
 5,Carlos,Sánchez,IT,5000,Gerente,7.0
 6,María,López,Marketing,4500,Gerente,7.0
