@@ -75,14 +75,14 @@ for epoch in range(epochs):
     for entrada, objetivos in trainLoader:
         optimizer.zero_grad()
         salidaEntrenamiento = model(entrada)
-        train_loss = criterion(salidaEntrenamiento, objetivos)
-        train_loss.backward()
+        perdida = criterion(salidaEntrenamiento, objetivos)
+        perdida.backward()
         optimizer.step()
 
         # Cálculo de precisión en regresión
-        precionBatch = ((torch.abs(salidaEntrenamiento - objetivos) < threshold).float().mean()).item()
-        perdidaEntrenamiento += train_loss.item()
-        precisionEntrenamiento += precionBatch
+        precisionBatch = ((torch.abs(salidaEntrenamiento - objetivos) < threshold).float().mean()).item()
+        perdidaEntrenamiento += perdida.item()
+        precisionEntrenamiento += precisionBatch
 
     # Promediar la pérdida y precisión en el epoch
     perdidaEntrenamiento /= len(trainLoader)
@@ -96,9 +96,9 @@ for epoch in range(epochs):
         for entrada, objetivos in validLoader:
             validOutputs = model(entrada)
             validLoss = criterion(validOutputs, objetivos)
-            precionBatch = ((torch.abs(validOutputs - objetivos) < threshold).float().mean()).item()
+            precisionBatch = ((torch.abs(validOutputs - objetivos) < threshold).float().mean()).item()
             mediaDePerdidaEpoca += validLoss.item()
-            valPrecision += precionBatch
+            valPrecision += precisionBatch
 
     # Promediar la pérdida y precisión en validación
     mediaDePerdidaEpoca /= len(validLoader)
@@ -113,7 +113,7 @@ for epoch in range(epochs):
     # Imprimir cada 50 épocas
 
     print(f"Época [{epoch + 1}/{epochs}] - "
-            f"MSE: {perdidaEntrenamiento:.4f}, Accuracy: {precisionEntrenamiento:.4f} - "
-            f"Val MSE: {mediaDePerdidaEpoca:.4f}, Val Accuracy: {valPrecision:.4f}")
+            f"Perdida entrenamiento: {perdidaEntrenamiento:.4f}, Precision: {precisionEntrenamiento:.4f} - "
+            f"Perdida validador: {mediaDePerdidaEpoca:.4f}, Precision validador: {valPrecision:.4f}")
         
         
