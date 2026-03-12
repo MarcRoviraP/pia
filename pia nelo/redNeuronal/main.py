@@ -39,7 +39,7 @@ class RegresionNN(nn.Module):
         # Asignar la entrada y el numero de neuronas
         self.hidden = nn.Linear(inputDim,16)
         # Capa de salida 16 neuronas con 1 salida
-        self.output = nn.Linear(16,1)
+        self.output = nn.Linear(16,2)
         
         # ReLU pasa las entradas negativas a 0 y las positivas las mantiene
         self.activation = nn.ReLU()
@@ -73,8 +73,12 @@ for epoch in range(epochs):
     precisionEntrenamiento = 0
 
     for entrada, objetivos in trainLoader:
+        
+        # Limplia los gradientes
         optimizer.zero_grad()
+        # Entrena el modelo
         salidaEntrenamiento = model(entrada)
+        # Calcula la perdida de la salida del entrenamiento, con los objetivos 
         perdida = criterion(salidaEntrenamiento, objetivos)
         perdida.backward()
         optimizer.step()
@@ -110,10 +114,11 @@ for epoch in range(epochs):
     trainAccuaracy.append(precisionEntrenamiento)
     valAccuaracy.append(valPrecision)
 
-    # Imprimir cada 50 épocas
 
     print(f"Época [{epoch + 1}/{epochs}] - "
             f"Perdida entrenamiento: {perdidaEntrenamiento:.4f}, Precision: {precisionEntrenamiento:.4f} - "
             f"Perdida validador: {mediaDePerdidaEpoca:.4f}, Precision validador: {valPrecision:.4f}")
-        
+    
+
+       
         
