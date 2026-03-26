@@ -27,7 +27,7 @@ class BinaryClasificationNN(nn.Module):
         return x
     
     def proccesarData(self,X,y):
-        y_3 = (y == '3')
+        y_3 = (y == '3') # Crea una mascar de valores true y false del tensor cunado y == 3
         
         
         # Dividir datos entre entrenamiento y test
@@ -41,8 +41,12 @@ class BinaryClasificationNN(nn.Module):
         
         
         # unsqueeze transforma el vector en una matriz para tener las mismas dimensiones y poder trabajar con los tensores
+        # Unsqueeze adapta el tensor para que tanto la x y la y tengan las mismas dimensiones y se pueda operar con estos datos
         self.XTrainTensor = torch.tensor(self.XTrain.values,dtype=torch.float32)
-        self.yTrainTensor = torch.tensor(self.yTrain.values,dtype=torch.long).unsqueeze(1)
+        self.yTrainTensor = torch.tensor(self.yTrain.values,dtype=torch.long)
+        print(self.yTrainTensor.shape)
+        self.yTrainTensor = self.yTrainTensor.unsqueeze(1)
+        print(self.yTrainTensor.shape)
         
         self.XValTensor = torch.tensor(self.XVal.values,dtype=torch.float32)
         self.yValTensor = torch.tensor(self.yVal.values,dtype=torch.long).unsqueeze(1)
@@ -66,23 +70,20 @@ class BinaryClasificationNN(nn.Module):
                 # Reincia gradientes del optimizador
                 optmizer.zero_grad()
                 salidaEntrenamiento = self(batchInputs)
-                perdidaEntrenamiento = criterion(salidaEntrenamiento,batchObjetivos.float())
-                perdidaEntrenamiento.backward()
-                optmizer.step()
+                perdidaEntrenamiento = criterion(salidaEntrenamiento,batchObjetivos.float()) # Calcula la perdida
+                perdidaEntrenamiento.backward() # Calcula como mejorar el modelo
+                optmizer.step() # Ajusta los pesos
                 
-                # Calculo precision del modelo
                 
-                perdidaPorEpoca += perdidaEntrenamiento.item()
-            # Promedio precion epoca
+                perdidaPorEpoca += perdidaEntrenamiento.item() # Almacena la perdida total de la epoca
             
-            perdidaPorEpoca /= len(self.trainLoader)
+            perdidaPorEpoca /= len(self.trainLoader) # Calcula la media de la perdida del modelo
             
-            # Evaluacion en validacion
             
-            self.eval()
+            self.eval() # Modo evaluacion
             perdidaValidEpoca = 0
             perdidaPrecisionEpoca = 0
-            with torch.no_grad():
+            with torch.no_grad(): # No calcula gradientes ya que no esta intentando aprender  se esta evaluando
                 for batchInputs, objetivoBatch in self.valLoader:
                     salidaValid = self(batchInputs)
                     perdidaValid = criterion(salidaValid,objetivoBatch.float())
