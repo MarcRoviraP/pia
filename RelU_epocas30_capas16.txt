@@ -1,0 +1,2 @@
+Época [1/30] - Perdida entrenamiento: 509569264396.2880, Precision: 0.0000 - Perdida validador: 566455620024.7296, Precision validador: 0.0000
+Época [2/30] - Perdida entrenamiento: 506751887768.7808, Precision: 0.0000 - Perdida validador: 562377044256.3584, Precision validador: 0.0000
